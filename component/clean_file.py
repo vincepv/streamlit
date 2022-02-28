@@ -3,17 +3,18 @@ import streamlit as st
 
 def clean_file(): 
     
-    uploaded_file = st.file_uploader("Choose a file. Important should be CSV utf8 only")
+    st.header("Supprimer les doublons")
+    uploaded_file = st.file_uploader("Choisir un fichier, format CSV utf8.")
     
     
     if uploaded_file is not None:
         df = pd.read_csv(uploaded_file)   
-        df['test'] = df['rue']+' test ici'
+        df.drop_duplicates(subset=['id'],keep='first',inplace=True)
         csv = df.to_csv().encode('utf-8')
 
         st.download_button(
-            label="Download data as CSV",
+            label="Télécharger le  fichier",
             data= csv,
-            file_name='large_df.csv',
+            file_name='no_duplicate.csv',
             mime='text/csv',
         )
